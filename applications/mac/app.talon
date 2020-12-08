@@ -6,9 +6,6 @@ action(app.preferences):
 action(app.tab_close):
 	key(cmd-w)
 	
-#action(app.tab_detach):
-#  Move the current tab to a new window
-  
 action(app.tab_next):
 	key(cmd-alt-right)
 	
