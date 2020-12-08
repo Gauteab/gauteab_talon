@@ -4,7 +4,6 @@ double dash: "--"
 triple quote: '"""'
 triple tick: "'''"
 (dot dot | dotdot): ".."
-ellipses: "..."
 boom: ", "
 plus: "+"
 imply: "->"
@@ -27,10 +26,10 @@ pointy:
 	"<>"
 	key(left)
 inside percent: 
-	insert("%%") 
+	"%%" 
 	key(left)
 inside quotes:
-	insert('""')
+	'""'
 	key(left)
 angle this: 
     text = edit.selected_text()
