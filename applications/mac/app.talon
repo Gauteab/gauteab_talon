@@ -22,7 +22,7 @@ action(app.window_close):
 	key(cmd-w)
 	
 action(app.window_hide):
-	key(cmd-h)
+	key(cmd-m)
 	
 action(app.window_hide_others):
 	key(cmd-option-h)

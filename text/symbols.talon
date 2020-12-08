@@ -38,8 +38,8 @@ empty escaped string:
 inside (squares | square brackets | list):
 	insert("[]")
 	key(left)
-curly: 
-	"{}" 
+curly:
+	"{}"
 	key(left)
 pointie:
 	"<>"

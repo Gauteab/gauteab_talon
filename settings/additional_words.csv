@@ -16,9 +16,11 @@ tree
 code
 loop
 error
+traverse
 map
+sum
 body
-color,Kohler
+Kohler, color
 input
 grid
 day
