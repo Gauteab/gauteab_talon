@@ -27,6 +27,7 @@ rerun: key(up enter)
 rerun 2: key(up up enter)
 cd: "cd "
 cd up: "cd ..\n"
+cd <phrase>: "cd {phrase}\n"
 B root: "br\n"
 brew install: "brew install "
 edit: "vim "
@@ -49,20 +50,11 @@ helm live main: "elm-live src/Main.elm\n"
 java C:"javac "
 java run:"java "
 
-dash <user.letters>:
-    " -"
-    insert(letters)
-    " "
-dash dash <user.word>:
-    " --"
-    insert(word)
+dash <user.letters>: " -{letters} "
+dash dash <user.word>: " --{word}"
+do {user.bash_command}: "{bash_command} "
 
-do {user.bash_command}: 
-    insert(bash_command)
-    " "
-
-(directory | dirt) {user.directory}:
-    insert(directory)
+(directory | dirt) {user.directory}: "{directory}"
 
 move {user.directory}:
     "mv "
