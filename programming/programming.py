@@ -56,7 +56,8 @@ extension_lang_map = {
     "vba": "vba",
     "vim": "vimscript",
     "vimrc": "vimscript",
-    "hs": "haskell"
+    "hs": "haskell",
+    "tex": "tex",
 }
 
 # flag indicates whether or not the title tracking is enabled
@@ -87,10 +88,10 @@ class code_actions:
         result = ""
         if not forced_language:
             file_extension = actions.win.file_ext()
-            # file_name = actions.win.filename()
-            file_name = actions.win.title()
-            file_extension = file_name.split(".")[-1]
-            print(":",file_extension)
+            file_name = actions.win.filename()
+            # file_name = actions.win.title()
+            # file_extension = file_name.split(".")[-1]
+            print("extension: ", file_extension)
 
             if file_extension != "":
                 result = file_extension

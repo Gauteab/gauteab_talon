@@ -16,9 +16,7 @@ tree
 code
 loop
 error
-traverse
 map
-sum
 body
 Kohler, color
 input
@@ -35,14 +33,3 @@ frames
 tex
 move,mood
 utter
-are 8,array
-constants,Constance
-elm,Alan
-row
-column
-zipper
-node
-vim
-sitter
-TreeSitter, tree sitter
-header
