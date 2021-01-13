@@ -16,9 +16,7 @@ tree
 code
 loop
 error
-traverse
 map
-sum
 body
 Kohler, color
 input
@@ -30,3 +28,8 @@ lens
 parse
 parser
 files
+hover
+frames
+tex
+move,mood
+utter

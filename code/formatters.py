@@ -156,7 +156,8 @@ formatters_words = {
     "packed": formatters_dict["DOUBLE_COLON_SEPARATED"],
     "padded": formatters_dict["SPACE_SURROUNDED_STRING"],
     # "say": formatters_dict["NOOP"],
-    # "sentence": formatters_dict["CAPITALIZE_FIRST_WORD"],
+    "sentence": formatters_dict["CAPITALIZE_FIRST_WORD"],
+    "singh": formatters_dict["CAPITALIZE_FIRST_WORD"],
     "slasher": formatters_dict["SLASH_SEPARATED"],
     "smash": formatters_dict["NO_SPACES"],
     "snake": formatters_dict["SNAKE_CASE"],
@@ -230,6 +231,9 @@ def formatter_immune(m) -> ImmuneString:
     return ImmuneString(str(value))
 
 
+@mod.capture(rule="<user.text>")
+def camel_text(m) -> str: return actions.user.formatted_text(str(m), "PRIVATE_CAMEL_CASE")
+
 @mod.action_class
 class Actions:
     def formatted_text(phrase: Union[str, Phrase], formatters: str) -> str:
@@ -273,6 +277,11 @@ class Actions:
         text = actions.self.formatted_text(unformatted, formatters)
         actions.insert(text)
         return text
+
+    def comma_separated(strings: List[str]) -> str:
+        """Insert a list of strings, separated by commas."""
+        return ",".join(strings)
+
 
     def reformat_text(text: str, formatters: str) -> str:
         """Reformat the text."""
