@@ -71,3 +71,12 @@ mark [down] preview: ":MarkdownPreview\n"
 
 substitute: ":s/"
 substitute all: ":%s/"
+
+cock fix: user.vim_normal_mode(":CocFix\n")
+# do hover: user.vim_normal_mode(":call CocAction('doHover')\n")
+do hover: user.vim_normal_mode(" ch")
+add extension: 
+    user.vim_normal_mode("ggO")
+    "lang\t"
+
+source config: user.vim_normal_mode(":source $MYVIMRC\n")

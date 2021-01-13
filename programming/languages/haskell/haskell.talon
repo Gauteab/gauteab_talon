@@ -41,17 +41,11 @@ action(user.code_state_case):
 action(user.code_type_definition): "type "	
 action(user.code_import): "import "
 action(user.code_comment): "-- "
-action(user.code_private_function): ""
-action(user.code_protected_function):
-    user.code_private_function()
-action(user.code_public_function):
-    user.code_private_function()
-    repeat(2)
 
 # Keywords
-
 instance: "instance "
 deriving: " deriving "
+deriving {user.haskell_classes}+: " deriving ({user.insert_comma_separated(haskell_classes_list)})"
 class: "class "
 let: "let "
 add where: "where "
@@ -59,7 +53,6 @@ do block: "do\n"
 comes from: " <- "
 
 # Type Declarations
-
 type alias: "type "
 type alias <phrase>:
     "type "
@@ -84,16 +77,14 @@ new type <phrase>:
     " "
 
 # Type Insertion
-
 type <user.haskell_type>: "{haskell_type}"
 of type: " :: "
 of type <user.haskell_type>: " :: {user.haskell_type}" 
 to [type] <user.haskell_type>: " -> {user.haskell_type} "
+[type] <user.haskell_type> to: " {user.haskell_type} -> "
 <user.haskell_type> to <user.haskell_type_>: " {haskell_type} -> {haskell_type_} "
 <user.haskell_type> with <user.haskell_type_>: " ({haskell_type}, {haskell_type_}) "
 list of <user.haskell_type>: " [{haskell_type}] "
-
-<user.haskell_test>: "{haskell_test}"
 
 # Operators
 {user.haskell_operator_list}: " {haskell_operator_list} "
@@ -105,12 +96,24 @@ function {user.haskell_operator_list}: "({haskell_operator_list}) "
     user.code_insert_function(code_functions, "")
     " {haskell_operator_list} "
 
-(apply | app) <user.code_functions>: "{user.code_functions} $ "
+# Imports
+import { user.haskell_module}: user.haskell_import_module(haskell_module)
+import (qualified | Q) { user.haskell_module }:
+    user.haskell_import_module_qualified(haskell_module)
 
-import { user.haskell_module_list }: user.haskell_import_module(haskell_module_list)
-import (qualified | Q) { user.haskell_module_list }:
-    user.haskell_import_module_qualified(user.haskell_module_list)
+# Modules
+module <user.haskell_module_alias>: "{haskell_module_alias}"
+<user.haskell_module_alias> dot: "{haskell_module_alias}."
+<user.haskell_module_alias> dot <user.camel_text>: 
+    "{user.haskell_module_alias}.{camel_text}"
 
-<user.haskell_module_alias> dot: "{user.haskell_module_alias}."
-<user.haskell_module_alias> dot <phrase>: "{user.haskell_module_alias}.{phrase}"
+# Debug
+<user.haskell_test>: "{haskell_test}"
 
+# Miscellaneous
+range from <number>: " [{number} ..] "
+<user.haskell_range>: "{haskell_range}"
+range <number>: 
+    " [{number} ..  ] "
+    edit.left()
+    repeat(2)

@@ -1,7 +1,7 @@
 
 import re
 
-from talon import Context, Module, actions, settings
+from talon import Context, Module, actions, settings, ctrl
 
 mod = Module()
 ctx = Context()
@@ -13,6 +13,7 @@ and code.language: haskell
 
 ctx.lists["user.code_functions"] = {
     "print": "print",
+    "via non empty": "viaNonEmpty",
     "return": "return",
     "pure": "pure",
     "undefined": "undefined",
@@ -23,9 +24,17 @@ ctx.lists["user.code_functions"] = {
     "lens two": "_2",
 }
 
+mod.list("haskell_classes", desc="haskell classes")
+ctx.lists["user.haskell_classes"] = {
+    "show":"Show",
+    "equal":"Eq",
+    "order":"Ord",
+}
+
 mod.list("haskell_type_list", desc="haskell types")
 ctx.lists["user.haskell_type_list"] = {
     "boolean": "Bool",
+    "zipper": "Zipper",
     "either": "Either",
     "unit": "()",
     "integer": "Integer",
@@ -44,6 +53,8 @@ ctx.lists["user.haskell_type_list"] = {
     "car": "Char",
     "character": "Char",
     "parser": "Parser",
+    "hint map": "IntMap",
+    "hint set": "IntSet",
 }
 
 mod.list("haskell_operator_list", desc="haskell operators")
@@ -66,21 +77,29 @@ ctx.lists["user.haskell_operator_list"] = {
     "lens set": ".~",
     "lens assign": ".=",
     "modify": "%~",
+    "apply": "$",
 }
 
 modules = {
     #       qualified, alias
     "set": ("Data.Set", "Set"),
+    "map": ("Data.Map", "Map"),
+    "zipper": ("Data.List.Zipper", "Zipper"),
+    "hint map": ("Data.IntMap", "IntMap"),
+    "hint set": ("Data.IntSet", "IntSet"),
+    "shell": ("Shelly", "Shelly"),
     "prelude": ("Prelude", "Prelude"),
     "list": ("Data.List", "List"),
     "foldable": ("Data.Foldable", "Foldable"),
     "lens": ("Control.Lens", "Lens"),
     "text": ("Data.Text", "Text"),
-    "map": ("Data.Map.Strict", "Map"),
 }
 
-mod.list("haskell_module_list", desc="haskell modules")
-ctx.lists["user.haskell_module_list"] = [s for (s,(q,a)) in modules.items()]
+mod.list("haskell_module", desc="haskell modules")
+ctx.lists["user.haskell_module"] = [s for (s,(q,a)) in modules.items()]
+
+@mod.capture(rule="<number> till <number>")
+def haskell_range(m) -> str: return f" [{m[0]} .. {m[2]}] "
 
 @mod.capture(rule="{self.haskell_type_list}+")
 def haskell_type_(m) -> str: return str(m)
@@ -88,11 +107,11 @@ def haskell_type_(m) -> str: return str(m)
 @mod.capture(rule="{self.haskell_type_list}+")
 def haskell_type(m) -> str: return str(m)
 
-@mod.capture(rule="{self.haskell_module_list}")
-def haskell_module(m) -> str: return modules[m.haskell_module_list][0]
+@mod.capture(rule="{self.haskell_module}")
+def haskell_module(m) -> str: return modules[m.haskell_module][0]
 
-@mod.capture(rule="{self.haskell_module_list}")
-def haskell_module_alias(m) -> str: return modules[m.haskell_module_list][1]
+@mod.capture(rule="{self.haskell_module}")
+def haskell_module_alias(m) -> str: return modules[m.haskell_module][1]
 
 @mod.capture(rule="{self.haskell_type_list}+ test {self.code_functions}")
 def haskell_test(m) -> str:
@@ -103,7 +122,7 @@ def haskell_test(m) -> str:
     return ""
 
 @mod.action_class
-class haskell_actions:
+class Actions:
     def haskell_test_action(name: str):
         """Test Action"""
         print(name)
@@ -118,5 +137,5 @@ class haskell_actions:
 @ctx.action_class("user")
 class user_actions:
     def code_insert_function(text: str, selection: str):
-        actions.user.paste(text + " ")
+        actions.insert(text + " ")
 

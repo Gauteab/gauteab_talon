@@ -3,3 +3,4 @@
 
 spotlight: key(cmd-space)
 dredge: key(cmd-tab)
+next window: key(cmd-alt-ctrl-n)

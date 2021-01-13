@@ -29,3 +29,6 @@ talon mode: user.talon_mode()
     mode.disable("sleep")
     mode.disable("dictation")
     mode.enable("command")
+^dolphin mode$:
+    mode.disable("command")
+    mode.enable("user.dolphin")

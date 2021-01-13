@@ -233,6 +233,9 @@ def formatter_immune(m) -> ImmuneString:
     return ImmuneString(str(value))
 
 
+@mod.capture(rule="<user.text>")
+def camel_text(m) -> str: return actions.user.formatted_text(str(m), "PRIVATE_CAMEL_CASE")
+
 @mod.action_class
 class Actions:
     def formatted_text(phrase: Union[str, Phrase], formatters: str) -> str:
@@ -286,6 +289,11 @@ class Actions:
         text = actions.self.formatted_text(unformatted, formatters)
         actions.insert(text)
         return text
+
+    def comma_separated(strings: List[str]) -> str:
+        """Insert a list of strings, separated by commas."""
+        return ",".join(strings)
+
 
     def insert_many(strings: List[str]) -> None:
         """Insert a list of strings, sequentially."""
