@@ -5,6 +5,7 @@ and code.language: tex
 tag(): user.code_comment
 action(user.code_comment): "-- "
 
+use package: "\\usepackage{"
 add {user.tex_simple_commands}: user.tex_command(tex_simple_commands)
 begin {user.tex_target}: user.tex_begin(tex_target)
 text {user.tex_text_commands}: user.tex_command(tex_text_commands)
@@ -13,3 +14,10 @@ comment: "% "
 quoted:
     "``''"
     key(left left)
+
+minted helm:
+    "\\begin{{minted}}{{elm}}\n\n"
+    "\\end{{minted}}\n"
+    key(up up)
+
+reference: "~\\ref{"
