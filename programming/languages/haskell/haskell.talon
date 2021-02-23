@@ -41,6 +41,9 @@ action(user.code_state_case):
 action(user.code_type_definition): "type "	
 action(user.code_import): "import "
 action(user.code_comment): "-- "
+action(user.code_type_annotation): " :: "
+action(user.code_type_alias): "type "
+
 
 # Keywords
 instance: "instance "
@@ -53,16 +56,6 @@ do block: "do\n"
 comes from: " <- "
 
 # Type Declarations
-type alias: "type "
-type alias <phrase>:
-    "type "
-    insert(user.formatted_text(phrase, "PUBLIC_CAMEL_CASE"))
-    " = "
-type alias <phrase> [(equals | is)] <user.haskell_type>:
-    "type "
-    insert(user.formatted_text(phrase, "PUBLIC_CAMEL_CASE"))
-    " = "
-    insert(user.haskell_type)
 data: "data "
 data <phrase>:
     "data "

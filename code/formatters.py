@@ -1,14 +1,16 @@
-from talon import Module, Context, actions, ui, imgui
-from talon.grammar import Phrase
-from typing import List, Union
+import os
 import re
+from typing import List, Union
+
+from talon import Context, Module, actions, app, imgui, ui
+from talon.grammar import Phrase
 
 ctx = Context()
 key = actions.key
 edit = actions.edit
 
-words_to_keep_lowercase = "a,an,the,at,by,for,in,is,of,on,to,up,and,as,but,or,nor".split(
-    ","
+words_to_keep_lowercase = (
+    "a,an,the,at,by,for,in,is,of,on,to,up,and,as,but,or,nor".split(",")
 )
 
 # last_phrase has the last phrase spoken, WITHOUT formatting.
@@ -40,7 +42,6 @@ def format_phrase(m: Union[str, Phrase], fmtrs: str):
     else:
         if m.words[-1] == "over":
             m.words = m.words[:-1]
-
         words = actions.dictate.parse_words(m)
         words = actions.dictate.replace_words(words)
 
@@ -72,6 +73,15 @@ def format_phrase_no_history(word_list, fmtrs: str):
 
 NOSEP = True
 SEP = False
+
+
+def prefixed_words_with_joiner(prefix, joiner):
+    """Pass through words unchanged, but add a separator between them."""
+
+    def formatter_function(i, word, _):
+        return prefix + word if i == 0 else joiner + word
+
+    return (NOSEP, formatter_function)
 
 
 def words_with_joiner(joiner):
@@ -110,43 +120,41 @@ def every_word(word_func):
 
 
 formatters_dict = {
-    "NOOP": (SEP, lambda i, word, _: word),
-    "DOUBLE_UNDERSCORE": (NOSEP, first_vs_rest(lambda w: "__%s__" % w)),
-    "PRIVATE_CAMEL_CASE": (NOSEP, first_vs_rest(lambda w: w, lambda w: w.capitalize())),
-    "PROTECTED_CAMEL_CASE": (
-        NOSEP,
-        first_vs_rest(lambda w: w, lambda w: w.capitalize()),
-    ),
-    "PUBLIC_CAMEL_CASE": (NOSEP, every_word(lambda w: w.capitalize())),
-    "SNAKE_CASE": (
-        NOSEP,
-        first_vs_rest(lambda w: w.lower(), lambda w: "_" + w.lower()),
-    ),
-    "NO_SPACES": (NOSEP, every_word(lambda w: w)),
-    "DASH_SEPARATED": words_with_joiner("-"),
-    "TERMINAL_DASH_SEPARATED": (
-        NOSEP,
-        first_vs_rest(lambda w: " --" + w.lower(), lambda w: "-" + w.lower()),
-    ),
-    "DOUBLE_COLON_SEPARATED": words_with_joiner("::"),
     "ALL_CAPS": (SEP, every_word(lambda w: w.upper())),
     "ALL_LOWERCASE": (SEP, every_word(lambda w: w.lower())),
-    "DOUBLE_QUOTED_STRING": (SEP, surround('"')),
-    "SINGLE_QUOTED_STRING": (SEP, surround("'")),
-    "SPACE_SURROUNDED_STRING": (SEP, surround(" ")),
-    "DOT_SEPARATED": words_with_joiner("."),
-    "DOT_SNAKE": (NOSEP, lambda i, word, _: "." + word if i == 0 else "_" + word),
-    "SLASH_SEPARATED": (NOSEP, every_word(lambda w: "/" + w)),
-    "CAPITALIZE_FIRST_WORD": (SEP, first_vs_rest(lambda w: w.capitalize())),
     "CAPITALIZE_ALL_WORDS": (
         SEP,
         lambda i, word, _: word.capitalize()
         if i == 0 or word not in words_to_keep_lowercase
         else word,
     ),
+    "CAPITALIZE_FIRST_WORD": (SEP, first_vs_rest(lambda w: w.capitalize())),
+    "DASH_SEPARATED": words_with_joiner("-"),
+    "DOT_SEPARATED": words_with_joiner("."),
+    "DOUBLE_COLON_SEPARATED": words_with_joiner("::"),
+    "DOUBLE_QUOTED_STRING": (SEP, surround('"')),
+    "DOUBLE_UNDERSCORE": (NOSEP, first_vs_rest(lambda w: "__%s__" % w)),
     "FIRST_THREE": (NOSEP, lambda i, word, _: word[0:3]),
     "FIRST_FOUR": (NOSEP, lambda i, word, _: word[0:4]),
     "FIRST_FIVE": (NOSEP, lambda i, word, _: word[0:5]),
+    "FOLDER_SEPARATED": (NOSEP, every_word(lambda w: w + os.sep)),
+    "LONG_ARG": prefixed_words_with_joiner("--", "-"),
+    "SHORT_ARG": prefixed_words_with_joiner("-", "-"),
+    "NO_SPACES": (NOSEP, every_word(lambda w: w)),
+    "NOOP": (SEP, lambda i, word, _: word),
+    "PRIVATE_CAMEL_CASE": (NOSEP, first_vs_rest(lambda w: w, lambda w: w.capitalize())),
+    "PROTECTED_CAMEL_CASE": (
+        NOSEP,
+        first_vs_rest(lambda w: w, lambda w: w.capitalize()),
+    ),
+    "PUBLIC_CAMEL_CASE": (NOSEP, every_word(lambda w: w.capitalize())),
+    "SINGLE_QUOTED_STRING": (SEP, surround("'")),
+    "SLASH_SEPARATED": (NOSEP, every_word(lambda w: "/" + w)),
+    "SNAKE_CASE": (
+        NOSEP,
+        first_vs_rest(lambda w: w.lower(), lambda w: "_" + w.lower()),
+    ),
+    "SPACE_SURROUNDED_STRING": (SEP, surround(" ")),
 }
 
 # This is the mapping from spoken phrases to formatters
@@ -155,21 +163,23 @@ formatters_words = {
     "alldown": formatters_dict["ALL_LOWERCASE"],
     "camel": formatters_dict["PRIVATE_CAMEL_CASE"],
     "dotted": formatters_dict["DOT_SEPARATED"],
-    "dubstring": formatters_dict["DOUBLE_QUOTED_STRING"],
     "dunder": formatters_dict["DOUBLE_UNDERSCORE"],
+    "folder": formatters_dict["FOLDER_SEPARATED"],
     "hammer": formatters_dict["PUBLIC_CAMEL_CASE"],
     "kebab": formatters_dict["DASH_SEPARATED"],
+    "long arg": formatters_dict["LONG_ARG"],
     "packed": formatters_dict["DOUBLE_COLON_SEPARATED"],
     "padded": formatters_dict["SPACE_SURROUNDED_STRING"],
     # "say": formatters_dict["NOOP"],
-    "sentence": formatters_dict["CAPITALIZE_FIRST_WORD"],
-    "singh": formatters_dict["CAPITALIZE_FIRST_WORD"],
+    # "sentence": formatters_dict["CAPITALIZE_FIRST_WORD"],
     "slasher": formatters_dict["SLASH_SEPARATED"],
     "smash": formatters_dict["NO_SPACES"],
     "snake": formatters_dict["SNAKE_CASE"],
-    # "speak": formatters_dict["NOOP"],
-    "string": formatters_dict["SINGLE_QUOTED_STRING"],
+    "speak": formatters_dict["NOOP"],
+    "string": formatters_dict["DOUBLE_QUOTED_STRING"],
+    "ticks": formatters_dict["SINGLE_QUOTED_STRING"],
     "title": formatters_dict["CAPITALIZE_ALL_WORDS"],
+    "upper": formatters_dict["ALL_CAPS"],
     # disable a few formatters for now
     # "tree": formatters_dict["FIRST_THREE"],
     # "quad": formatters_dict["FIRST_FOUR"],
@@ -182,6 +192,10 @@ all_formatters.update(formatters_words)
 
 mod = Module()
 mod.list("formatters", desc="list of formatters")
+mod.list(
+    "prose_formatter",
+    desc="words to start dictating prose, and the formatter they apply",
+)
 
 
 @mod.capture(rule="{self.formatters}+")
@@ -218,7 +232,7 @@ class ImmuneString(object):
 @mod.capture(
     # Add anything else into this that you want to be able to speak during a
     # formatter.
-    rule="(<user.symbol_key> | <user.letter> | numb <number>)"
+    rule="(<user.symbol_key> | numb <number>)"
 )
 def formatter_immune(m) -> ImmuneString:
     """Text that can be interspersed into a formatter, e.g. characters.
@@ -232,9 +246,6 @@ def formatter_immune(m) -> ImmuneString:
         value = m[0]
     return ImmuneString(str(value))
 
-
-@mod.capture(rule="<user.text>")
-def camel_text(m) -> str: return actions.user.formatted_text(str(m), "PRIVATE_CAMEL_CASE")
 
 @mod.action_class
 class Actions:
@@ -290,11 +301,6 @@ class Actions:
         actions.insert(text)
         return text
 
-    def comma_separated(strings: List[str]) -> str:
-        """Insert a list of strings, separated by commas."""
-        return ",".join(strings)
-
-
     def insert_many(strings: List[str]) -> None:
         """Insert a list of strings, sequentially."""
         for string in strings:
@@ -302,9 +308,19 @@ class Actions:
 
 
 ctx.lists["self.formatters"] = formatters_words.keys()
+ctx.lists["self.prose_formatter"] = {
+    "say": "NOOP",
+    "sing": "CAPITALIZE_FIRST_WORD",
+}
 
+@mod.capture(rule="<user.text>")
+def camel_text(m) -> str: return actions.user.formatted_text(str(m), "PRIVATE_CAMEL_CASE")
 
-@imgui.open(software=False)
+def comma_separated(strings: List[str]) -> str:
+    """Insert a list of strings, separated by commas."""
+    return ",".join(strings)
+
+@imgui.open(software=app.platform == "linux")
 def gui(gui: imgui.GUI):
     gui.text("List formatters")
     gui.line()
@@ -312,7 +328,7 @@ def gui(gui: imgui.GUI):
         gui.text(f"{name} | {format_phrase_no_history(['one', 'two', 'three'], name)}")
 
 
-@imgui.open(software=False)
+@imgui.open(software=app.platform == "linux")
 def recent_gui(gui: imgui.GUI):
     gui.text("Recent formatters")
     gui.line()

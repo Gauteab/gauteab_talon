@@ -21,10 +21,8 @@ undo that: edit.undo()
 redo that: edit.redo()
 paste match: edit.paste_match_style()
 file save: edit.save()
-wipe: key(backspace)    
+(wipe | delete): key(backspace)
 (pad | padding): 
 	insert("  ") 
 	key(left)
-slap:
-	# edit.line_end()
-	key(enter)
+slap: key(enter)

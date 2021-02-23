@@ -3,6 +3,7 @@ from talon import Context, Module, actions, app, imgui, registry, settings
 ctx = Context()
 mod = Module()
 mod.list("code_functions", desc="List of functions for active language")
+mod.list("code_extra_operators", desc="List of operators for active language")
 mod.list("code_types", desc="List of types for active language")
 mod.list("code_libraries", desc="List of libraries for active language")
 
@@ -28,6 +29,20 @@ mod.tag(
 key = actions.key
 function_list = []
 library_list = []
+standard_operators = {# not used
+    "plus": "+",
+    "minus": "-",
+    "times": "*",
+    "mod": "%",
+    "equals": "==",
+    "not equals": "!=",
+    "greater than": ">",
+    "greater equals": ">=",
+    "lesser equals": "<=",
+    "less than": "<",
+    "logical and": "&&",
+    "logical or": "||",
+}
 extension_lang_map = {
     "asm": "assembly",
     "bat": "batch",
@@ -57,7 +72,9 @@ extension_lang_map = {
     "vim": "vimscript",
     "vimrc": "vimscript",
     "hs": "haskell",
+    "elm": "elm",
     "tex": "tex",
+    "purs": "purescript",
 }
 
 # flag indicates whether or not the title tracking is enabled
@@ -69,11 +86,10 @@ def code_functions(m) -> str:
     """Returns a function name"""
     return m.code_functions
 
-
-@mod.capture(rule="{user.code_types}")
-def code_types(m) -> str:
+@mod.capture(rule="({user.code_types}|{user.type})")
+def code_type(m) -> str:
     """Returns a type"""
-    return m.code_types
+    return str(m)
 
 
 @mod.capture(rule="{user.code_libraries}")
@@ -408,6 +424,12 @@ class Actions:
 
     def code_from_import():
         """from import python equivalent"""
+
+    def code_type_annotation():
+        """type annotation"""
+
+    def code_type_alias():
+        """type alias"""
 
     def code_toggle_functions():
         """GUI: List functions for active language"""

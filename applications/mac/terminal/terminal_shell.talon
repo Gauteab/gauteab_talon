@@ -56,6 +56,7 @@ do {user.bash_command}: "{bash_command} "
 
 (directory | dirt) {user.directory}: "{directory}"
 
+{user.bash_command}: "{bash_command}"
 move {user.directory}:
     "mv "
     insert(directory)

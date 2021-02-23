@@ -20,10 +20,25 @@ local_overrides = {"cabal": {"build": "new-build",
 
 ctx = Context()
 
-ctx.lists["self.bash_command"] = {
-    "code down": "codedown",
-    "take": "take"
+commands= {
+    "make": ["watch\n", "clean\n", "build\n"]
 }
+
+def create_commands(dictionary):
+    result = []
+    for (k, v) in dictionary.items():
+        if type(v) is str:
+            result.append(f"{k} {v}")
+        else:
+            for v in v:
+                result.append(f"{k} {v}")
+    return result
+
+ctx.lists["self.bash_command"] = create_commands(commands)
+# ctx.lists["self.bash_command"] = {
+#     "code down": "codedown",
+#     "take": "take"
+# }
 
 # ctx.lists["self.build_tool"] = ["make",
 #                                 "cabal", "stack", "pure", "cargo", "helm", "npm"]

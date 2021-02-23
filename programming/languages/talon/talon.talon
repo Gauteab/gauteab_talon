@@ -15,6 +15,7 @@ action(user.code_comment): "# "
 
 dot talon: insert(".talon")
 user dot: "user."
+key: "key("
 
 #defintion blocks for the context
 action block:

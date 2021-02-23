@@ -14,3 +14,5 @@ action(user.split_window_vertically): key(cmd-d)
 
 abort: key(ctrl-c)
 suspend: key(ctrl-z)
+
+reset title: "set_title\n"

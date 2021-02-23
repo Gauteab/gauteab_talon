@@ -1,3 +1,4 @@
+long <user.symbol_key>: " {symbol_key} "
 question [mark]: "?"
 (downscore | underscore): "_"
 double dash: "--"
