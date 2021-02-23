@@ -26,7 +26,7 @@ state case: user.code_state_case()
 state do: user.code_state_do()
 state goto: user.code_state_go_to()
 state return: user.code_state_return()
-state import: user.code_import()
+[state] import: user.code_import()
 from import: user.code_from_import()
 state class: user.code_type_class()
 state include: user.code_include()
@@ -53,3 +53,11 @@ funk wrap <user.code_functions>:
 funk wrap <number>:
     user.code_select_function(number - 1, edit.selected_text())
 dock string: user.code_document_string()
+
+type <user.code_type>: "{code_type}"
+module <user.code_libraries>: "{code_libraries}"
+<user.code_libraries> dot: "{code_libraries}."
+import <user.libraries>:
+    user.code_import()
+    insert(libraries)
+{ user.code_extra_operators }: " {code_extra_operators} "

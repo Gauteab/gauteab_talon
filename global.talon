@@ -4,3 +4,6 @@
 spotlight: key(cmd-space)
 dredge: key(cmd-tab)
 next window: key(cmd-alt-ctrl-n)
+todo:"test"
+div:"hello"
+{user.global_stuff}: "{global_stuff}"

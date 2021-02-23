@@ -1,17 +1,21 @@
-from typing import Set, List
-
-from talon import Module, Context, actions, app
 import sys
 
-default_alphabet = "air brat cap dark each far guest harp ink Jack Kate look made near out pit quench red sir trap urge verb who plex yank said"
-# default_alphabet = "air bat cap drum each fine gust harp sit jury crunch look made near odd pit quench red sun trap urge vest whale plex yank zip"
-default_alphabet = default_alphabet.split(" ")
+from typing import Set
+
+from talon import Context, Module, actions, app
+
+# My experience:
+#   fine - conflicts with find
+#   jury  - suddenly always matching with three or tree
+#   pit  - conflicts with page
+#   yank - conflicts with vim command
+default_alphabet = "air brat cap dark each far guest harp ink Jack Kate look made near out pit quench red sir trap urge verb who plex yank said".split(" ")
 letters_string = "abcdefghijklmnopqrstuvwxyz"
 
 default_digits = "zero one two three four five six seven eight nine".split(" ")
 numbers = [str(i) for i in range(10)]
-default_f_digits = "one two three four five six seven eight nine ten eleven twelve".split(
-    " "
+default_f_digits = (
+    "one two three four five six seven eight nine ten eleven twelve".split(" ")
 )
 
 mod = Module()
@@ -22,6 +26,7 @@ mod.list("number_key", desc="All number keys")
 mod.list("modifier_key", desc="All modifier keys")
 mod.list("function_key", desc="All function keys")
 mod.list("special_key", desc="All special keys")
+mod.list("punctuation", desc="words for inserting punctuation into text")
 
 
 @mod.capture(rule="{self.modifier_key}+")
@@ -34,6 +39,7 @@ def modifiers(m) -> str:
 def arrow_key(m) -> str:
     "One directional arrow key"
     return m.arrow_key
+
 
 @mod.capture(rule="<self.arrow_key>+")
 def arrow_keys(m) -> str:
@@ -51,6 +57,19 @@ def number_key(m) -> str:
 def letter(m) -> str:
     "One letter key"
     return m.letter
+
+
+@mod.capture(rule="{self.letter}")
+def upper_letter(m) -> str:
+    "Return one upper case"
+    return m.letter.upper()
+
+
+@mod.capture(rule="{self.letters}")
+def letters(m) -> str:
+    "Multiple letter keys"
+    return m.letters
+
 
 @mod.capture(rule="{self.special_key}")
 def special_key(m) -> str:
@@ -103,7 +122,8 @@ def letters(m) -> str:
 
 ctx = Context()
 ctx.lists["self.modifier_key"] = {
-    "alt": "alt",
+    # If you find 'alt' is often misrecognized, try using 'alter'.
+    "alt": "alt",  #'alter': 'alt',
     "command": "cmd",
     "control": "ctrl",  #'troll':   'ctrl',
     "option": "alt",
@@ -112,70 +132,82 @@ ctx.lists["self.modifier_key"] = {
 }
 alphabet = dict(zip(default_alphabet, letters_string))
 ctx.lists["self.letter"] = alphabet
-ctx.lists["self.symbol_key"] = {
-    "back tick": "`",
+
+# `punctuation_words` is for words you want available BOTH in dictation and as
+# key names in command mode. `symbol_key_words` is for key names that should be
+# available in command mode, but NOT during dictation.
+punctuation_words = {
+    # TODO: I'm not sure why we need these, I think it has something to do with
+    # Dragon. Possibly it has been fixed by later improvements to talon? -rntz
     "`": "`",
+    ",": ",",  # <== these things
+    "back tick": "`",
     "comma": ",",
-    ",": ",",
-    "dot": ".",
     "period": ".",
-    "semi": ";",
     "semicolon": ";",
-    "quote": "\"",
-    "tick": "'",
-    "square": "[",
-    "R square": "]",
+    "colon": ":",
     "forward slash": "/",
+    "question mark": "?",
+    "exclamation mark": "!",
+    "exclamation point": "!",
+    "dollar sign": "$",
+    "asterisk": "*",
+    "hash sign": "#",
+    "number sign": "#",
+    "percent sign": "%",
+    "at sign": "@",
+    "and sign": "&",
+    "ampersand": "&",
+}
+symbol_key_words = {
+    "grave": "`",
+    "comma": ",",
+    "dot": ".",
+    "point": ".",
+    "space": " ",
+    "void": " ",
+    "semi": ";",
+    "tick": "'",
+    "lock": "[",
+    "square": "[",
+    "rock": "]",
     "slash": "/",
-    "backslash": "\\",
+    "bish": "\\",
     "minus": "-",
     "dash": "-",
     "equals": "=",
     "plus": "+",
-    "question mark": "?",
+    "question": "?",
     "tilde": "~",
     "bang": "!",
-    "exclamation point": "!",
     "dollar": "$",
-    "dollar sign": "$",
-    "down score": "_",
-    "under score": "_",
+    "score": "_",
     "colon": ":",
+    "coal": ":",
+    "lub": "(",
     "paren": "(",
-    "L paren": "(",
-    "left paren": "(",
-    "R paren": ")",
-    "right paren": ")",
-    "brace": "{",
-    "left brace": "{",
-    "R brace": "}",
-    "right brace": "}",
+    "rub": ")",
+    "lace": "{",
+    "race": "}",
     "angle": "<",
-    "left angle": "<",
-    "less than": "<",
+    "langle": "<",
     "rangle": ">",
-    "R angle": ">",
-    "right angle": ">",
-    "greater than": ">",
     "star": "*",
-    "asterisk": "*",
-    # "pound": "#",
     "hash": "#",
-    # "hash sign": "#",
-    "number sign": "#",
     "percent": "%",
-    # "percent sign": "%",
+    "cent": "%",
     "caret": "^",
     "at sign": "@",
-    "and sign": "&",
-    "ampersand": "&",
+    "swirl": "@",
     "amper": "&",
     "pipe": "|",
-    # "dubquote": '"',
-    # "double quote": '"',
+    "quote": '"',
 }
 
-
+# make punctuation words also included in {user.symbol_keys}
+symbol_key_words.update(punctuation_words)
+ctx.lists["self.punctuation"] = punctuation_words
+ctx.lists["self.symbol_key"] = symbol_key_words
 ctx.lists["self.number_key"] = dict(zip(default_digits, numbers))
 ctx.lists["self.arrow_key"] = {
     "down": "down",
@@ -183,6 +215,7 @@ ctx.lists["self.arrow_key"] = {
     "right": "right",
     "up": "up",
 }
+
 
 simple_keys = [
     "end",
@@ -197,10 +230,15 @@ simple_keys = [
 ]
 
 alternate_keys = {
-    "delete": "backspace",
+    "backspace": "backspace",
     "forward delete": "delete",
-    #'junk': 'backspace',
+    "junk": "backspace",
+    "nuke": "delete",
 }
+# mac apparently doesn't have the menu key.
+if app.platform in ("windows", "linux"):
+    alternate_keys["menu key"] = "menu"
+
 keys = {k: k for k in simple_keys}
 keys.update(alternate_keys)
 ctx.lists["self.special_key"] = keys
@@ -208,9 +246,9 @@ ctx.lists["self.function_key"] = {
     f"F {default_f_digits[i]}": f"f{i + 1}" for i in range(12)
 }
 
+
 @mod.action_class
 class Actions:
     def get_alphabet() -> dict:
         """Provides the alphabet dictionary"""
         return alphabet
-

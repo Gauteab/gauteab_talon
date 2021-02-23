@@ -1,7 +1,6 @@
-from talon import Module, Context, actions, ui, imgui, app
+from talon import Module, Context, actions, ui, imgui
 from talon.grammar import Phrase
 from typing import List, Union
-import logging
 import re
 
 ctx = Context()
@@ -12,9 +11,13 @@ words_to_keep_lowercase = "a,an,the,at,by,for,in,is,of,on,to,up,and,as,but,or,no
     ","
 )
 
-# The last phrase spoken, without & with formatting. Used for reformatting.
+# last_phrase has the last phrase spoken, WITHOUT formatting.
+# This is needed for reformatting.
 last_phrase = ""
-last_phrase_formatted = ""
+
+# formatted_phrase_history keeps the most recent formatted phrases, WITH formatting.
+formatted_phrase_history = []
+formatted_phrase_history_length = 20
 
 
 def surround(by):
@@ -29,24 +32,27 @@ def surround(by):
 
 
 def format_phrase(m: Union[str, Phrase], fmtrs: str):
-    global last_phrase, last_phrase_formatted
+    global last_phrase
     last_phrase = m
     words = []
     if isinstance(m, str):
         words = m.split(" ")
     else:
-        # TODO: is this still necessary, and if so why?
         if m.words[-1] == "over":
             m.words = m.words[:-1]
 
         words = actions.dictate.parse_words(m)
         words = actions.dictate.replace_words(words)
 
-    result = last_phrase_formatted = format_phrase_no_history(words, fmtrs)
-    actions.user.add_phrase_to_history(result)
-    # Arguably, we shouldn't be dealing with history here, but somewhere later
-    # down the line. But we have a bunch of code that relies on doing it this
-    # way and I don't feel like rewriting it just now. -rntz, 2020-11-04
+    result = format_phrase_no_history(words, fmtrs)
+
+    # Add result to history.
+    global formatted_phrase_history
+    formatted_phrase_history.insert(0, result)
+    formatted_phrase_history = formatted_phrase_history[
+        :formatted_phrase_history_length
+    ]
+
     return result
 
 
@@ -156,14 +162,15 @@ formatters_words = {
     "packed": formatters_dict["DOUBLE_COLON_SEPARATED"],
     "padded": formatters_dict["SPACE_SURROUNDED_STRING"],
     # "say": formatters_dict["NOOP"],
-    "sentence": formatters_dict["CAPITALIZE_FIRST_WORD"],
-    "singh": formatters_dict["CAPITALIZE_FIRST_WORD"],
+    # "sentence": formatters_dict["CAPITALIZE_FIRST_WORD"],
     "slasher": formatters_dict["SLASH_SEPARATED"],
     "smash": formatters_dict["NO_SPACES"],
     "snake": formatters_dict["SNAKE_CASE"],
-    # "speak": formatters_dict["NOOP"],
-    "string": formatters_dict["SINGLE_QUOTED_STRING"],
+    "speak": formatters_dict["NOOP"],
+    "string": formatters_dict["DOUBLE_QUOTED_STRING"],
+    "ticks": formatters_dict["SINGLE_QUOTED_STRING"],
     "title": formatters_dict["CAPITALIZE_ALL_WORDS"],
+    "upper": formatters_dict["ALL_CAPS"],
     # disable a few formatters for now
     # "tree": formatters_dict["FIRST_THREE"],
     # "quad": formatters_dict["FIRST_FOUR"],
@@ -216,7 +223,7 @@ class ImmuneString(object):
 @mod.capture(
     # Add anything else into this that you want to be able to speak during a
     # formatter.
-    rule="(<user.symbol_key> | numb <number>)"
+    rule="(<user.symbol_key> | <user.letter> | numb <number>)"
 )
 def formatter_immune(m) -> ImmuneString:
     """Text that can be interspersed into a formatter, e.g. characters.

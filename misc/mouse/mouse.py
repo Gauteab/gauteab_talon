@@ -2,7 +2,7 @@ import os
 import pathlib
 import subprocess
 
-from talon import Context, Module, actions, app, cron, ctrl, imgui, noise, settings, ui
+from talon import Context, Module, actions, app, cron, ctrl, imgui, noise, settings, ui, clip
 from talon_plugins import eye_mouse, eye_zoom_mouse, speech
 from talon_plugins.eye_mouse import config, toggle_camera_overlay, toggle_control
 
@@ -93,6 +93,12 @@ def gui_wheel(gui: imgui.GUI):
 
 @mod.action_class
 class Actions:
+    def close_dragon_guidance():
+        """Closes Dragon Guidance Dialogue"""
+        ctrl.mouse_move(214.12109375, 753.875)
+        ctrl.mouse_click(0)
+        ctrl.mouse_move(1028, 0)
+
     def mouse_show_cursor():
         """Shows the cursor"""
         show_cursor_helper(True)
@@ -114,6 +120,8 @@ class Actions:
 
     def mouse_toggle_control_mouse():
         """Toggles control mouse"""
+        if config.control_mouse:
+            ctrl.mouse_move(1028, 0)
         toggle_control(not config.control_mouse)
 
     def mouse_toggle_camera_overlay():

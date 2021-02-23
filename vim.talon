@@ -80,3 +80,4 @@ add extension:
     "lang\t"
 
 source config: user.vim_normal_mode(":source $MYVIMRC\n")
+

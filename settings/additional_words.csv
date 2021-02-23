@@ -18,7 +18,7 @@ loop
 error
 map
 body
-Kohler, color
+color,Kohler
 input
 grid
 day
@@ -33,3 +33,6 @@ frames
 tex
 move,mood
 utter
+are 8,array
+constants,Constance
+elm,Alan

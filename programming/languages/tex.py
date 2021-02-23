@@ -4,16 +4,32 @@ mod = Module()
 ctx = Context()
 
 mod.list("tex_simple_commands", desc="tex_simple_commands")
-ctx.lists["user.tex_simple_commands"] = ["label", "chapter", "part", "section", "subsection", "paragraph", "subparagraph", "item"]
+ctx.lists["user.tex_simple_commands"] = [ "subfile", "label", "chapter", "part", "section",  "subsubsection", "subsection", "paragraph", "subparagraph", "item"]
 
 mod.list("tex_text_commands", desc="tex_text_commands")
-ctx.lists["user.tex_text_commands"] = {"bold": "textbf", "italic": "textit"}
+ctx.lists["user.tex_text_commands"] = {"bold": "textbf", "italic": "textit", "color": "textcolor{red}"}
 
 mod.list("tex_target", desc="tex_target")
 ctx.lists["user.tex_target"] = ["text", "itemize", "tabular", "center", "minted"]
 
+@mod.scope
+def scope():
+    return {
+        "test": "value",
+    }
+
 mod.list("tex_snippets", desc="tex_snippets")
-ctx.lists["user.tex_snippets"] = { "section":"sec" , "paragraph":"par", "chapter":"cha"}
+ctx.lists["user.tex_snippets"] = {
+    "subfile":"subfile",
+    "section":"sec" ,
+    "paragraph":"par",
+    "chapter":"cha",
+    "subsection": "sub",
+    "begin": "begin",
+    "table": "table",
+    "minted": "mint",
+    "elm example": "elmexample"
+}
 
 @mod.action_class
 class Actions:
