@@ -89,19 +89,19 @@ for entry in mode_tag_list:
 class win_actions:
     def filename():
         title = actions.win.title()
-        result = title.split(")")
+        filename = title.split(" | ")[-1]
+        print(filename)
         # Assumes the last word after the last ) entry has the filename
-        if len(result) > 1:
-            result = result[-1]
+        # if len(result) > 1:
+        #     result = result[-1]
         # print(result)
-        if "." in result:
-            return result
-        return ""
+        # if "." in result:
+        #     return result
+        return filename
 
     def file_ext():
-        ext = actions.win.filename().split(".")[-1]
-        # print(ext)
-        return ext
+        extension = actions.win.filename().split(".")[-1]
+        return extension
 
 
 ctx.lists["self.vim_arrow"] = {
@@ -995,6 +995,11 @@ def vim_select_motion(m) -> str:
 # order to modify modes, run commands in specific modes, etc
 @mod.action_class
 class Actions:
+    def vim_go_to_position(row: int, column: int):
+        """set position"""
+        horizontal_movement = f"{column}l" if column > 0 else ""
+        actions.user.vim_normal_mode(f"{row}G0{horizontal_movement}")
+
     def vim_set_normal_mode():
         """set normal mode"""
         v = VimMode()
