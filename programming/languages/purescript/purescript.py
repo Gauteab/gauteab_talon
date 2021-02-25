@@ -32,6 +32,7 @@ ctx.lists["user.haskell_classes"] = {
 
 # mod.list("haskell_type_list", desc="haskell types")
 ctx.lists["user.code_types"] = {
+    "array": "Array",
     "boolean": "Bool",
     "zipper": "Zipper",
     "either": "Either",
