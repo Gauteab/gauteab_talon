@@ -57,7 +57,7 @@ dock string: user.code_document_string()
 type <user.code_type>: "{code_type}"
 module <user.code_libraries>: "{code_libraries}"
 <user.code_libraries> dot: "{code_libraries}."
-import <user.libraries>:
-    user.code_import()
-    insert(libraries)
+# import <user.libraries>:
+#     user.code_import()
+#     insert(libraries)
 { user.code_extra_operators }: " {code_extra_operators} "

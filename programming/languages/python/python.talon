@@ -97,12 +97,13 @@ action(user.code_document_string): user.insert_cursor("\"\"\"[|]\"\"\"")
 dunder in it: "__init__"
 state (def | deaf | deft): "def "
 self taught: "self."
+user taught: "user."
 pie test: "pytest"
 state past: "pass"
 
-^funky <user.text>$: user.code_private_function(text)
+^private funky <user.text>$: user.code_private_function(text)
 #^pro funky <user.text>$: user.code_protected_function(text)
-^pub funky <user.text>$: user.code_public_function(text)
+^define <user.text>$: user.code_public_function(text)
 #^static funky <user.text>$: user.code_private_static_function(text)
 #^pro static funky <user.text>$: user.code_protected_static_function(text)
 #^pub static funky <user.text>$: user.code_public_static_function(text)

@@ -4,6 +4,7 @@ title: /VIM/i
 norm: key(ctrl-c)
 complete: key(ctrl-n)
 
+test: user.vim_go_to_position(5, 5)
 delete [around] word: key(ctrl-c d a w)
 delete line: key(ctrl-c d d)
 change [inner] word: key(ctrl-c c i w)
