@@ -107,7 +107,7 @@ class code_actions:
             file_name = actions.win.filename()
             # file_name = actions.win.title()
             # file_extension = file_name.split(".")[-1]
-            print("extension: ", file_extension)
+            # print("extension: ", file_extension)
 
             if file_extension != "":
                 result = file_extension

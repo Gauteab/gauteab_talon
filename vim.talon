@@ -4,6 +4,8 @@ title: /VIM/i
 norm: key(ctrl-c)
 complete: key(ctrl-n)
 
+# next <user.identifier>: user.vim_normal_mode("/{identifier}\n")
+
 test: user.vim_go_to_position(5, 5)
 delete [around] word: key(ctrl-c d a w)
 delete line: key(ctrl-c d d)
@@ -69,6 +71,7 @@ spell last: key([ s)
 spell fix: key(z =)
 
 mark [down] preview: ":MarkdownPreview\n"
+nerd tree: user.vim_normal_mode(":NERDTree\n")
 
 substitute: ":s/"
 substitute all: ":%s/"
