@@ -6,8 +6,10 @@ action(user.code_type_definition): "data "
 action(user.code_comment): "-- "
 action(user.code_document_string): "-- | "
 action(user.code_type_annotation): " :: "
+action(user.code_type_alias): "type "
 
 # Keywords
+foreign import: "foreign import "
 instance: "instance "
 deriving: " deriving "
 deriving {user.haskell_classes}+: " deriving ({user.insert_comma_separated(haskell_classes_list)})"

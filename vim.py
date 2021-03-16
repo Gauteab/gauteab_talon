@@ -21,6 +21,7 @@
 # - add test cases
 
 import time
+import os
 
 from talon import Context, Module, actions, settings, ui
 
@@ -90,7 +91,7 @@ class win_actions:
     def filename():
         title = actions.win.title()
         filename = title.split(" | ")[-1]
-        print(filename)
+        # print(filename)
         # Assumes the last word after the last ) entry has the filename
         # if len(result) > 1:
         #     result = result[-1]
@@ -100,6 +101,7 @@ class win_actions:
         return filename
 
     def file_ext():
+        # print("vim: ", actions.win.filename().split(".")[-1])
         extension = actions.win.filename().split(".")[-1]
         return extension
 
@@ -991,14 +993,32 @@ def vim_select_motion(m) -> str:
     return "".join(str(x) for x in list(m))
 
 
+@ctx.action_class("user")
+class editor_actions:
+
+    def editor_get_cursor_position():
+        title = actions.win.title()
+        return eval(title.split(" | ")[-2])
+
+    def editor_get_file_path():
+        title = actions.win.title()
+        filename = title.split(" | ")[-1]
+        return os.path.expanduser(filename)
+
+    def editor_go_to_position(row: int, column: int):
+        horizontal_movement = f"{column}l" if column > 0 else ""
+        actions.user.vim_normal_mode(f"{row}G0{horizontal_movement}")
+
+    def editor_select_range(line1: int, column1: int, line2: int, column2: int):
+        actions.user.editor_go_to_position(line1, column1)
+        vertical_movement = f"{line2-line1}j" if line2-line1 > 0 else ""
+        horizontal_movement = f"{column2}l" if column2 > 0 else ""
+        actions.insert(f"v{vertical_movement}0{horizontal_movement}")
+
 # These are actions you can call from vim.talon via `user.method_name()` in
 # order to modify modes, run commands in specific modes, etc
 @mod.action_class
 class Actions:
-    def vim_go_to_position(row: int, column: int):
-        """set position"""
-        horizontal_movement = f"{column}l" if column > 0 else ""
-        actions.user.vim_normal_mode(f"{row}G0{horizontal_movement}")
 
     def vim_set_normal_mode():
         """set normal mode"""

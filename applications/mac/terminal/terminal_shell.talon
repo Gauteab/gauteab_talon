@@ -56,6 +56,8 @@ do {user.bash_command}: "{bash_command} "
 
 (directory | dirt) {user.directory}: "{directory}"
 
+pure install: "spago install "
+
 {user.bash_command}: "{bash_command}"
 move {user.directory}:
     "mv "
