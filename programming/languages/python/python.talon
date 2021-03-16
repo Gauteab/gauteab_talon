@@ -100,6 +100,7 @@ self taught: "self."
 user taught: "user."
 pie test: "pytest"
 state past: "pass"
+define: "def "
 
 ^private funky <user.text>$: user.code_private_function(text)
 #^pro funky <user.text>$: user.code_protected_function(text)

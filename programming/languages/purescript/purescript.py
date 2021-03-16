@@ -21,6 +21,7 @@ ctx.lists["user.code_functions"] = {
     "F map": "fmap",
     "map": "map",
     "car": "char",
+    "tuple": "Tuple"
 }
 
 mod.list("haskell_classes", desc="haskell classes")
@@ -32,8 +33,10 @@ ctx.lists["user.haskell_classes"] = {
 
 # mod.list("haskell_type_list", desc="haskell types")
 ctx.lists["user.code_types"] = {
+    "ref": "Ref",
+    "effect": "Effect",
     "array": "Array",
-    "boolean": "Bool",
+    "boolean": "Boolean",
     "zipper": "Zipper",
     "either": "Either",
     "unit": "Unit",
