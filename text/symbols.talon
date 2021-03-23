@@ -9,11 +9,12 @@ triple tick: "'''"
 (triple grave | triple back tick | gravy):
     insert("```")
 (dot dot | dotdot): ".."
-ellipses: "..."
-(comma and | spamma): ", "
+boom: ", "
 plus: "+"
 imply: "->"
 arrow: "=>"
+left imply: "<-"
+left arrow: "<="
 new line: "\\n"
 carriage return: "\\r"
 line feed: "\\r\\n"
@@ -37,6 +38,11 @@ empty escaped string:
 inside (squares | square brackets | list):
 	insert("[]")
 	key(left)
+curly: 
+	"{}" 
+	key(left)
+pointie:
+	"<>"
 inside (bracket | braces):
 	insert("{}")
 	key(left)

@@ -18,6 +18,8 @@ action(edit.page_up): key(command-pageup)
 
 # Commands
 copy mode: key(cmd-shift-c)
+remove: "rm "
+move: "mv "
 make dirk: "mkdir "
 extract: "extract "
 pan doc: "pandoc "
@@ -27,7 +29,7 @@ rerun: key(up enter)
 rerun 2: key(up up enter)
 cd: "cd "
 cd up: "cd ..\n"
-cd <phrase>: "cd {phrase}\n"
+cd <user.text>: "cd {text}\n"
 B root: "br\n"
 brew install: "brew install "
 edit: "vim "
@@ -57,6 +59,9 @@ do {user.bash_command}: "{bash_command} "
 (directory | dirt) {user.directory}: "{directory}"
 
 pure install: "spago install "
+pure run: "spago run "
+pure build: "spago build "
+pure bundle: "spago bundle-app --main Main --to "
 
 {user.bash_command}: "{bash_command}"
 move {user.directory}:

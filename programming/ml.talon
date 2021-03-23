@@ -1,6 +1,6 @@
 # ML-family of programming languages 
 # (Meta-Language, not Machine Learning)
-code.language: elm
+# code.language: elm
 code.language: haskell
 code.language: purescript
 -
@@ -36,7 +36,7 @@ action(user.code_state_case):
     edit.left()
     repeat(2)
 action(user.code_state_if): "if "
-action(user.code_state_else_if): "else if"
+action(user.code_state_else_if): " else if "
 action(user.code_state_else): "else "
 action(user.code_import): "import "
 
