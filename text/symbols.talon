@@ -23,7 +23,7 @@ inside (squares | list):
 curly: 
 	"{}" 
 	key(left)
-pointy: 
+pointie: 
 	"<>"
 	key(left)
 inside percent: 
