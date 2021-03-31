@@ -5,6 +5,7 @@ and tag: user.git
 git add patch: "git add . -p\n"
 git add: "git add "
 git add (all | everything): "git add --all\n"
+git commit all: "git commit -v -a\n"
 git bisect: "git bisect "
 git blame: "git alame "
 git branch: "git branch "

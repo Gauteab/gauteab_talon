@@ -12,7 +12,7 @@ mod.list("directory", desc="")
 
 commands= {
     "make": ["watch\n", "clean\n", "build\n"],
-    "npm": [("clean", "run clean\n"), "start\n", "install ", "version\n"],
+    "npm": [("clean", "run clean\n"), "start\n", "install ", "version\n", ("build", "run build\n")],
     ("pure", "spago"): ["run\n", "version\n"]
 }
 
