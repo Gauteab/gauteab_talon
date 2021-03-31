@@ -32,12 +32,12 @@ cd up: "cd ..\n"
 cd <user.text>: "cd {text}\n"
 B root: "br\n"
 brew install: "brew install "
-edit: "vim "
-editor: "vim\n"
+edit: "vi "
+editor: "vi\n"
 edit file:
-  insert("vim")
+  insert("vi")
   key(enter space g)
-list files: key(l enter)
+list files: "l\n"
 find file: key(ctrl-g)
 find (his | history): key(ctrl-r)
 
@@ -58,21 +58,12 @@ do {user.bash_command}: "{bash_command} "
 
 (directory | dirt) {user.directory}: "{directory}"
 
-pure install: "spago install "
-pure run: "spago run "
-pure build: "spago build "
-pure bundle: "spago bundle-app --main Main --to "
+# pure install: "spago install "
+# pure run: "spago run "
+# pure build: "spago build "
+# pure bundle: "spago bundle-app --main Main --to "
 
 {user.bash_command}: "{bash_command}"
 move {user.directory}:
     "mv "
     insert(directory)
-# # Build tools
-# tool <user.build_tool>: insert(build_tool)
-# <user.build_action>: insert(build_action)
-# go <user.build_action>: 
-#     insert(build_action)
-#     insert('\n')
-# <user.build_action> <user.word>: 
-#     insert(build_action)
-#     insert(word)
