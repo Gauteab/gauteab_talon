@@ -2,6 +2,7 @@ from talon import Context, Module, actions, app, imgui, registry, settings
 
 ctx = Context()
 mod = Module()
+mod.list("code_languages", desc="List of languages")
 mod.list("code_functions", desc="List of functions for active language")
 mod.list("code_extra_operators", desc="List of operators for active language")
 mod.list("code_types", desc="List of types for active language")
@@ -44,38 +45,41 @@ standard_operators = {# not used
     "logical or": "||",
 }
 extension_lang_map = {
-    "asm": "assembly",
-    "bat": "batch",
-    "c": "c",
-    "cmake": "cmake",
-    "cpp": "cplusplus",
-    "cs": "csharp",
-    "gdb": "gdb",
-    "go": "go",
-    "h": "c",
-    "hpp": "cplusplus",
-    "js": "javascript",
-    "json": "json",
-    "lua": "lua",
-    "md": "markdown",
-    "pl": "perl",
-    "ps1": "powershell",
-    "py": "python",
-    "r": "r",
-    "rb": "ruby",
-    "s": "assembly",
-    "sh": "bash",
-    "snippets": "snippets",
-    "talon": "talon",
-    "ts": "typescript",
-    "vba": "vba",
-    "vim": "vimscript",
-    "vimrc": "vimscript",
-    "hs": "haskell",
-    "elm": "elm",
-    "tex": "tex",
-    "purs": "purescript",
+    ".asm": "assembly",
+    ".bat": "batch",
+    ".c": "c",
+    ".cmake": "cmake",
+    ".cpp": "cplusplus",
+    ".cs": "csharp",
+    ".gdb": "gdb",
+    ".go": "go",
+    ".h": "c",
+    ".hpp": "cplusplus",
+    ".js": "javascript",
+    ".json": "json",
+    ".lua": "lua",
+    ".md": "markdown",
+    ".pl": "perl",
+    ".ps1": "powershell",
+    ".py": "python",
+    ".r": "r",
+    ".rb": "ruby",
+    ".s": "assembly",
+    ".sh": "bash",
+    ".snippets": "snippets",
+    ".talon": "talon",
+    ".ts": "typescript",
+    ".vba": "vba",
+    ".vim": "vimscript",
+    ".vimrc": "vimscript",
+    ".hs": "haskell",
+    ".elm": "elm",
+    ".tex": "tex",
+    ".purs": "purescript",
+    ".tex": "tex",
 }
+
+ctx.lists["self.code_languages"] = [v for _,v in extension_lang_map.items()]
 
 # flag indicates whether or not the title tracking is enabled
 forced_language = False

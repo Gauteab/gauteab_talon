@@ -3,7 +3,7 @@ from talon import Module, Context, actions, ui, imgui, clip, settings
 ctx = Context()
 ctx.matches = r"""
 mode: user.talon
-mode: command 
+mode: command
 and code.language: talon
 """
 ctx.lists["user.code_functions"] = {
@@ -11,6 +11,8 @@ ctx.lists["user.code_functions"] = {
     "key": "key",
     "print": "print",
     "repeat": "repeat",
+    "normal": "user.vim_normal_mode",
+    "normal key": "user.vim_normal_mode_key",
 }
 
 

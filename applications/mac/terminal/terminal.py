@@ -4,11 +4,11 @@ import re
 import time
 import os
 
-mod = Module()
+module = Module()
 ctx = Context()
 
-mod.list("bash_command", desc="")
-mod.list("directory", desc="")
+module.list("bash_command", desc="")
+module.list("directory", desc="")
 
 commands= {
     "make": ["watch\n", "clean\n", "build\n"],
@@ -31,6 +31,13 @@ def create_commands(dictionary):
 
 ctx.lists["self.bash_command"] = create_commands(commands)
 ctx.lists["self.directory"] = {
-    "download": "~/Downloads"
+    "download": "~/Downloads",
+    "home": "~/",
+    "talon": "~/.talon",
+    "thesis": "~/uio/master/thesis",
+
 }
 
+@module.capture(rule="({user.directory}|<user.text>)")
+def directory(m) -> str:
+    return m

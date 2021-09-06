@@ -29,7 +29,7 @@ rerun: key(up enter)
 rerun 2: key(up up enter)
 cd: "cd "
 cd up: "cd ..\n"
-cd <user.text>: "cd {text}\n"
+(cd|go) <user.directory>: "cd {directory}\n"
 B root: "br\n"
 brew install: "brew install "
 edit: "vi "
@@ -40,6 +40,10 @@ edit file:
 list files: "l\n"
 find file: key(ctrl-g)
 find (his | history): key(ctrl-r)
+
+talon log: "talon-log\n"
+talon install: "talon-pip install "
+talon repel: "talon-repl\n"
 
 run Haskell: "runHaskell "
 Haskell repel: "ghci\n"
