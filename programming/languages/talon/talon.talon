@@ -4,6 +4,7 @@ and code.language: talon
 -
 tag(): user.code_operators
 tag(): user.code_comment
+tag(): user.code_generic
 action(user.code_operator_and): " and "
 action(user.code_operator_or): " or "
 action(user.code_operator_subtraction): " - "
