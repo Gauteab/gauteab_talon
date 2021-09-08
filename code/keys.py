@@ -1,18 +1,18 @@
 from typing import Set
 
-from talon import Module, Context, actions, app
-import sys
+from talon import Context, Module, actions, app
 
-default_alphabet = "air bat cap drum each fine gust harp sit jury crunch look made near odd pit quench red sun trap urge vest whale plex yank zip".split(
-    " "
-)
+# My experience:
+#   fine - conflicts with find
+#   jury  - suddenly always matching with three or tree
+#   pit  - conflicts with page
+#   yank - conflicts with vim command
+default_alphabet = "air brat cap dark each far guest harp ink Jack Kate look made near out pit quench red sir trap urge verb who plex yank said".split(" ")
 letters_string = "abcdefghijklmnopqrstuvwxyz"
 
 default_digits = "zero one two three four five six seven eight nine".split(" ")
 numbers = [str(i) for i in range(10)]
-default_f_digits = "one two three four five six seven eight nine ten eleven twelve".split(
-    " "
-)
+default_f_digits = "one two three four five six seven eight nine ten eleven twelve".split(" ")
 
 mod = Module()
 mod.list("letter", desc="The spoken phonetic alphabet")
@@ -53,6 +53,18 @@ def number_key(m) -> str:
 def letter(m) -> str:
     "One letter key"
     return m.letter
+
+
+@mod.capture(rule="{self.letter}")
+def upper_letter(m) -> str:
+    "Return one upper case"
+    return m.letter.upper()
+
+
+@mod.capture(rule="{self.letters}")
+def letters(m) -> str:
+    "Multiple letter keys"
+    return m.letters
 
 
 @mod.capture(rule="{self.special_key}")
@@ -156,48 +168,48 @@ punctuation_words = {
     "pound sign": "£",
 }
 symbol_key_words = {
+    "grave": "`",
+    "comma": ",",
     "dot": ".",
     "point": ".",
-    "quote": "'",
-    "apostrophe": "'",
-    "L square": "[",
-    "left square": "[",
+    "space": " ",
+    "void": " ",
+    "semi": ";",
+    "tick": "'",
+    "lock": "[",
     "square": "[",
-    "R square": "]",
-    "right square": "]",
+    "rock": "]",
     "slash": "/",
-    "backslash": "\\",
+    "bish": "\\",
     "minus": "-",
     "dash": "-",
     "equals": "=",
     "plus": "+",
+    "question": "?",
     "tilde": "~",
     "bang": "!",
-    "down score": "_",
-    "under score": "_",
+    "dollar": "$",
+    "score": "_",
+    "colon": ":",
+    "coal": ":",
+    "lub": "(",
     "paren": "(",
-    "L paren": "(",
-    "left paren": "(",
-    "R paren": ")",
-    "right paren": ")",
-    "brace": "{",
-    "left brace": "{",
-    "R brace": "}",
-    "right brace": "}",
+    "rub": ")",
+    "lace": "{",
+    "race": "}",
     "angle": "<",
-    "left angle": "<",
-    "less than": "<",
+    "langle": "<",
     "rangle": ">",
-    "R angle": ">",
-    "right angle": ">",
-    "greater than": ">",
     "star": "*",
     "hash": "#",
     "percent": "%",
+    "cent": "%",
     "caret": "^",
+    "at sign": "@",
+    "swirl": "@",
     "amper": "&",
     "pipe": "|",
-    "dubquote": '"',
+    "quote": '"',
     "double quote": '"',
 
     # Currencies
@@ -217,12 +229,13 @@ ctx.lists["self.arrow_key"] = {
     "up": "up",
 }
 
+
 simple_keys = [
-    "end",
-    "enter",
+    # "end",
+    # "enter",
     "escape",
-    "home",
-    "insert",
+    # "home",
+    # "insert",
     "pagedown",
     "pageup",
     "space",
@@ -230,11 +243,12 @@ simple_keys = [
 ]
 
 alternate_keys = {
-    "delete": "backspace",
+    # "backspace": "backspace",
     "forward delete": "delete",
-    #'junk': 'backspace',
-    "page up": "pageup",
-    "page down": "pagedown",
+    "junk": "backspace",
+    "nuke": "delete",
+    # "page up": "pageup",
+    # "page down": "pagedown",
 }
 # mac apparently doesn't have the menu key.
 if app.platform in ("windows", "linux"):
