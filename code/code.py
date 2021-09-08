@@ -59,6 +59,11 @@ extension_lang_map = {
     ".vba": "vba",
     ".vim": "vimscript",
     ".vimrc": "vimscript",
+    ".hs": "haskell",
+    ".elm": "elm",
+    ".tex": "tex",
+    ".purs": "purescript",
+    ".tex": "tex",
 }
 
 
@@ -79,6 +84,26 @@ def code_libraries(m) -> str:
     """Returns a type"""
     return m.code_libraries
 
+# from my old solution, maybe something to do with vim
+# @ctx.action_class("code")
+# class code_actions:
+#     def language():
+#         result = ""
+#         if not forced_language:
+#             file_extension = actions.win.file_ext()
+#             file_name = actions.win.filename()
+#             # file_name = actions.win.title()
+#             # file_extension = file_name.split(".")[-1]
+#             # print("extension: ", file_extension)
+
+#             if file_extension != "":
+#                 result = file_extension
+#             # it should always be the last split...
+#             elif file_name != "" and "." in file_name:
+#                 result = file_name.split(".")[-1]
+
+#             if result in extension_lang_map:
+#                 result = extension_lang_map[result]
 
 @ctx.action_class("code")
 class code_actions:
@@ -400,6 +425,12 @@ class Actions:
 
     def code_from_import():
         """from import python equivalent"""
+
+    def code_type_annotation():
+        """type annotation"""
+
+    def code_type_alias():
+        """type alias"""
 
     def code_toggle_functions():
         """GUI: List functions for active language"""
