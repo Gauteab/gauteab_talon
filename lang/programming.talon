@@ -6,6 +6,7 @@ block: user.code_block()
 #state in: insert(" in ")
 is not (none|null): user.code_is_not_null()
 is (none|null): user.code_is_null()
+assign: " = "
 #todo: types?
 #word (dickt | dictionary): user.code_type_dictionary()
 state if: user.code_state_if()
@@ -25,13 +26,14 @@ state case: user.code_state_case()
 state do: user.code_state_do()
 state goto: user.code_state_go_to()
 state return: user.code_state_return()
-state import: user.code_import()
+[state] import: user.code_import()
 from import: user.code_from_import()
 state class: user.code_type_class()
 state include: user.code_include()
 state include system: user.code_include_system()
 state include local: user.code_include_local()
-state type deaf: user.code_type_definition()
+[state] type deaf: user.code_type_definition()
+[state] type alias: user.code_type_alias()
 state type deaf struct: user.code_typedef_struct()
 state (no | nil | null): user.code_null()
 state break: user.code_break()
@@ -41,8 +43,10 @@ state false: user.code_false()
 
 # show and print functions and libraries
 toggle funk: user.code_toggle_functions()
-funk <user.code_functions>:
+call <user.code_functions>:
     user.code_insert_function(code_functions, "")
+call <phrase>:
+    user.code_insert_function(phrase, "")
 funk cell <number>:
     user.code_select_function(number - 1, "")
 funk wrap <user.code_functions>:
@@ -50,3 +54,11 @@ funk wrap <user.code_functions>:
 funk wrap <number>:
     user.code_select_function(number - 1, edit.selected_text())
 dock string: user.code_document_string()
+
+type <user.code_type>: "{code_type}"
+module <user.code_libraries>: "{code_libraries}"
+<user.code_libraries> dot: "{code_libraries}."
+# import <user.libraries>:
+#     user.code_import()
+#     insert(libraries)
+{ user.code_extra_operators }: " {code_extra_operators} "

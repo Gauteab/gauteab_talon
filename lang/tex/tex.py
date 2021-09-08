@@ -25,8 +25,7 @@ ctx.lists["user.tex_text_commands"] = {"bold": "textbf", "italic": "textit", "co
 mod.list("tex_target", desc="tex_target")
 ctx.lists["user.tex_target"] = ["text", "itemize", "tabular", "center", "minted", "code"]
 
-mod.list("tex_snippets", desc="tex_snippets")
-ctx.lists["user.tex_snippets"] = {
+ctx.lists["user.snippets"] = {
     "listing": "lst",
     "subfile":"subfile",
     "section":"sec" ,
