@@ -10,10 +10,10 @@ ctx = Context()
 
 mod.list("global_stuff", desc="global stuff")
 ctx.lists["user.global_stuff"] = {
-    "todo": "TODO",
-    "init": "init",
-    "json":"!",
-    "Jason":"!",
-    "msg":"!"
+    # "todo": "TODO",
+    # "init": "init",
+    # "json":"!",
+    # "Jason":"!",
+    # "msg":"!"
 }
 
