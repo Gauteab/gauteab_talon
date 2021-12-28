@@ -7,7 +7,7 @@ from talon import Context, Module, actions, app
 #   jury  - suddenly always matching with three or tree
 #   pit  - conflicts with page
 #   yank - conflicts with vim command
-default_alphabet = "air brat cap dark each fine guest harp ink Jack Kate look made near out pit quench red sir trap urge verb who plex yank said".split(" ")
+default_alphabet = "air brat cap dark each far guest harp ink Jack Kate look made near out pit quench red sir trap urge verb who plex yank said".split(" ")
 letters_string = "abcdefghijklmnopqrstuvwxyz"
 
 default_digits = "zero one two three four five six seven eight nine".split(" ")
@@ -208,7 +208,7 @@ symbol_key_words = {
     "at sign": "@",
     "swirl": "@",
     "amper": "&",
-    # "pipe": "|",
+    "pipe": "|",
     "quote": '"',
     "double quote": '"',
 

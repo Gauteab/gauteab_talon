@@ -18,6 +18,9 @@ left arrow: "<="
 new line: "\\n"
 carriage return: "\\r"
 line feed: "\\r\\n"
+pointe: 
+    "<>"
+    key(left)
 empty dubstring:
     '""'
     key(left)

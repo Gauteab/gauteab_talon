@@ -1,22 +1,15 @@
 app: apple_terminal
 app: iTerm2
-not title: /VIM/
+not title: /nvim/
+# app: Citrix\ Viewer
+app: com.citrix.receiver.icaviewer.mac
 -
 tag(): user.file_manager
 tag(): user.git
 tag(): terminal
 
-# Actions
-action(user.file_manager_open_parent): "cd ..\n"
-action(app.tab_open): key(cmd-t)
-action(app.tab_close): key(cmd-w)
-action(app.tab_next): key(ctrl-tab)
-action(app.tab_previous): key(ctrl-shift-tab)
-action(app.window_open): key(cmd-n)
-action(edit.page_down): key(command-pagedown)
-action(edit.page_up): key(command-pageup)
-
 # Commands
+go to: "z\n"
 copy mode: key(cmd-shift-c)
 remove: "rm "
 move: "mv "
@@ -27,7 +20,7 @@ carol: "curl "
 resume: "fg\n"
 rerun: key(up enter)
 rerun 2: key(up up enter)
-cd: "cd "
+# cd: "cd "
 cd up: "cd ..\n"
 (cd|go) <user.directory>: "cd {directory}\n"
 B root: "br\n"
@@ -38,7 +31,6 @@ edit file:
   insert("vi")
   key(enter space g)
 list files: "l\n"
-find file: key(ctrl-g)
 find (his | history): key(ctrl-r)
 
 talon log: "talon-log\n"

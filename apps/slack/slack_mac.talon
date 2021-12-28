@@ -2,6 +2,11 @@ os: mac
 app: slack
 -
 tag(): user.messaging
+
+unmute me:
+    speech.disable()
+    key(m)
+
 # Workspace
 workspace <number>: key("cmd-{number}")
 # Channel
